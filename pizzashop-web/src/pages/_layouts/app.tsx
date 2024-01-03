@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom' // https://reactrouter.com/en/main/components/outlet
 
+
 export function AppLayout() {
   return (
     <div>
