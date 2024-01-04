@@ -7,17 +7,29 @@ Projeto desenvolvido utilizando o React na sua forma mais pura, sem a utilizaç�
 
 <br>
 <div style="display: flex; justify-content:center; gap: 30px">
-  <img alt="Player de música" src="https://i.imgur.com/WMWJY9x.png" width="80%">
+  <img alt="Dashboard" src="https://i.imgur.com/HXtNt15.png" width="100%">
+</div>
+<br>
+
+<br>
+<div style="display: flex; justify-content:center; gap: 30px">
+  <img alt="Pedidos" src="https://i.imgur.com/WMWJY9x.png" width="100%">
+</div>
+<br>
+
+<br>
+<div style="display: flex; justify-content:center; gap: 30px">
+  <img alt="Detalhes do pedido" src="https://i.imgur.com/uQVNU21.png" width="100%">
 </div>
 <br>
 
 <div style="display: flex; justify-content:center; gap: 30px">
-  <img alt="Player de música" src="https://i.imgur.com/vr2GSQF.png" width="80%">
+  <img alt="Tela de login" src="https://i.imgur.com/vr2GSQF.png" width="100%">
 </div>
 <br>
 
 <div style="display: flex; justify-content:center; gap: 30px">
-  <img alt="Player de música" src="https://i.imgur.com/5hutLle.png" width="80%">
+  <img alt="Tela de cadastro" src="https://i.imgur.com/5hutLle.png" width="100%">
 </div>
 <br>
 
@@ -28,6 +40,7 @@ Projeto desenvolvido utilizando o React na sua forma mais pura, sem a utilizaç�
 - [ ] Poder obter detalhes sobre pedidos
 - [ ] Poder realizar alteração nos status dos pedidos
 - [ ] Poder realizar cancelamento de pedidos
+- [x] Light/Dark mode
 
 
 ## Instalação
@@ -38,12 +51,12 @@ Instalando as dependências
 npm i
 ```
 
-Rodando o servidor
+Rodando o projeto
 ```bash
 npm run dev
 ```
 
-## Autores
+## Autor
 
 - [Renan Fachin](https://github.com/RenanFachin/)
 
