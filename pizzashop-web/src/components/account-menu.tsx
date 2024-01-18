@@ -19,7 +19,7 @@ import { Skeleton } from './ui/skeleton'
 
 export function AccountMenu() {
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
-    queryKey: ['profile'], // queryKey é obrigatórui dentro da função useQuery
+    queryKey: ['profile'], // queryKey é obrigatório dentro da função useQuery
     queryFn: getProfile,
   })
 
