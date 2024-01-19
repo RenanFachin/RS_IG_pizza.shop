@@ -1,11 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { getManagedRestaurant } from '@/api/get-managed-restaurant'
+import {
+  getManagedRestaurant,
+  GetManagedRestaurantResponse,
+} from '@/api/get-managed-restaurant'
 import { updateProfile } from '@/api/updated-profile'
 
 import { Button } from './ui/button'
@@ -28,6 +31,8 @@ const storeProfileSchema = z.object({
 type StoreProfileSchema = z.infer<typeof storeProfileSchema>
 
 export function StoreProfileDialog() {
+  const queryClient = useQueryClient()
+
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'], // queryKey é obrigatório dentro da função useQuery
     queryFn: getManagedRestaurant,
@@ -50,6 +55,29 @@ export function StoreProfileDialog() {
   // Atualização de perfil
   const { mutateAsync: UpdateProfileFN } = useMutation({
     mutationFn: updateProfile,
+    onSuccess(data, variables, context) {
+      /**
+       * data -> dados retornados pela requisição
+       * variables -> retorna os dados utilizados para atualização do profile
+       */
+
+      const { name, description } = variables
+
+      const cached = queryClient.getQueryData<GetManagedRestaurantResponse>([
+        'managed-restaurant',
+      ])
+
+      if (cached) {
+        queryClient.setQueryData<GetManagedRestaurantResponse>(
+          ['managed-restaurant'],
+          {
+            ...cached, // Mantendo todas as informações e alterando somente name e description
+            name,
+            description,
+          },
+        )
+      }
+    },
   })
 
   async function handleUpdateProfile(data: StoreProfileSchema) {
