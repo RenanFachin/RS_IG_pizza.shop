@@ -1,9 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+import { DialogClose } from '@radix-ui/react-dialog'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { getManagedRestaurant } from '@/api/get-managed-restaurant'
+import { updateProfile } from '@/api/updated-profile'
 
 import { Button } from './ui/button'
 import {
@@ -28,9 +31,14 @@ export function StoreProfileDialog() {
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'], // queryKey é obrigatório dentro da função useQuery
     queryFn: getManagedRestaurant,
+    staleTime: Infinity,
   })
 
-  const { register, handleSubmit } = useForm<StoreProfileSchema>({
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<StoreProfileSchema>({
     resolver: zodResolver(storeProfileSchema),
     // Por que Values e não DefaultValues?
     values: {
@@ -38,6 +46,24 @@ export function StoreProfileDialog() {
       description: managedRestaurant?.description ?? '',
     },
   })
+
+  // Atualização de perfil
+  const { mutateAsync: UpdateProfileFN } = useMutation({
+    mutationFn: updateProfile,
+  })
+
+  async function handleUpdateProfile(data: StoreProfileSchema) {
+    try {
+      await UpdateProfileFN({
+        name: data.name,
+        description: data.description,
+      })
+
+      toast.success('Perfil atualizado com sucesso!')
+    } catch (error) {
+      toast.error('Falha ao atualizar o perfil, tente novamente!')
+    }
+  }
 
   return (
     <DialogContent>
@@ -48,7 +74,7 @@ export function StoreProfileDialog() {
         </DialogDescription>
       </DialogHeader>
 
-      <form>
+      <form onSubmit={handleSubmit(handleUpdateProfile)}>
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right" htmlFor="name">
@@ -69,11 +95,13 @@ export function StoreProfileDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" variant="ghost">
-            Cancelar
-          </Button>
+          <DialogClose asChild>
+            <Button type="button" variant="ghost">
+              Cancelar
+            </Button>
+          </DialogClose>
 
-          <Button type="submit" variant="success">
+          <Button type="submit" variant="success" disabled={isSubmitting}>
             Salvar
           </Button>
         </DialogFooter>
