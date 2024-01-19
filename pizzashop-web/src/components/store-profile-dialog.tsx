@@ -25,7 +25,7 @@ import { Textarea } from './ui/textarea'
 
 const storeProfileSchema = z.object({
   name: z.string().min(1),
-  description: z.string(),
+  description: z.string().nullable(),
 })
 
 type StoreProfileSchema = z.infer<typeof storeProfileSchema>
@@ -53,29 +53,41 @@ export function StoreProfileDialog() {
   })
 
   // Atualização de perfil
+  function updateManagedRestaurantCache({
+    name,
+    description,
+  }: StoreProfileSchema) {
+    const cached = queryClient.getQueryData<GetManagedRestaurantResponse>([
+      'managed-restaurant',
+    ])
+
+    if (cached) {
+      queryClient.setQueryData<GetManagedRestaurantResponse>(
+        ['managed-restaurant'],
+        {
+          ...cached, // Mantendo todas as informações e alterando somente name e description
+          name,
+          description,
+        },
+      )
+    }
+
+    return { cached }
+  }
+
   const { mutateAsync: UpdateProfileFN } = useMutation({
     mutationFn: updateProfile,
-    onSuccess(data, variables, context) {
-      /**
-       * data -> dados retornados pela requisição
-       * variables -> retorna os dados utilizados para atualização do profile
-       */
-
+    onMutate(variables) {
       const { name, description } = variables
 
-      const cached = queryClient.getQueryData<GetManagedRestaurantResponse>([
-        'managed-restaurant',
-      ])
+      const { cached } = updateManagedRestaurantCache({ name, description })
 
-      if (cached) {
-        queryClient.setQueryData<GetManagedRestaurantResponse>(
-          ['managed-restaurant'],
-          {
-            ...cached, // Mantendo todas as informações e alterando somente name e description
-            name,
-            description,
-          },
-        )
+      return { previousRestaurantProfile: cached } // retornando para o ONERROR ter acesso
+    },
+    onError(_error, _variables, context) {
+      // context -> informações que podem ser compartilhadas entre o contexto de uma mutation
+      if (context?.previousRestaurantProfile) {
+        updateManagedRestaurantCache(context.previousRestaurantProfile)
       }
     },
   })
