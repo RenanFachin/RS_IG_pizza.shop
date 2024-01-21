@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, X } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
-import { TypeOf, z } from 'zod'
+import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -121,7 +121,7 @@ export function OrderTableFilters() {
               <SelectContent>
                 <SelectItem value="all">Todos</SelectItem>
                 <SelectItem value="pending">Pendente</SelectItem>
-                <SelectItem value="canceled">Cancelador</SelectItem>
+                <SelectItem value="canceled">Cancelado</SelectItem>
                 <SelectItem value="processing">Em preparo</SelectItem>
                 <SelectItem value="delivering">Em entrega</SelectItem>
                 <SelectItem value="delivered">Entregue</SelectItem>
