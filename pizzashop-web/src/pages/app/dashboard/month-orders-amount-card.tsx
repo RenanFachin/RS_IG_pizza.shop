@@ -1,8 +1,15 @@
+import { useQuery } from '@tanstack/react-query'
 import { Utensils } from 'lucide-react'
 
+import { getMonthOrdersAmount } from '@/api/dashboard-metrics/get-month-orders-amount'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export function MonthOrdersAmountCard() {
+  const { data: monthOrdersAmount } = useQuery({
+    queryFn: getMonthOrdersAmount,
+    queryKey: ['metrics', 'month-orders-amount'],
+  })
+
   return (
     <Card>
       {/* O componente CardHeader já possui flex por definição e um space-y, desta forma é feito o reset */}
@@ -12,12 +19,31 @@ export function MonthOrdersAmountCard() {
       </CardHeader>
 
       <CardContent className="space-y-1">
-        <span className="text-2xl font-bold tracking-tight">250</span>
+        {monthOrdersAmount && (
+          <>
+            <span className="text-2xl font-bold tracking-tight">
+              {monthOrdersAmount.amount}
+            </span>
 
-        <p className="text-xs text-muted-foreground">
-          <span className="text-emerald-500 dark:text-emerald-400">+6%</span> em
-          relação ao mês passado
-        </p>
+            <p className="text-xs text-muted-foreground">
+              {monthOrdersAmount.diffFromLastMonth >= 0 ? (
+                <>
+                  <span className="text-emerald-500 dark:text-emerald-400">
+                    +{monthOrdersAmount.diffFromLastMonth}%
+                  </span>{' '}
+                  em relação ao mês passado
+                </>
+              ) : (
+                <>
+                  <span className="text-rose-500 dark:text-rose-400">
+                    {monthOrdersAmount.diffFromLastMonth}%
+                  </span>{' '}
+                  em relação ao mês passado
+                </>
+              )}
+            </p>
+          </>
+        )}
       </CardContent>
     </Card>
   )
