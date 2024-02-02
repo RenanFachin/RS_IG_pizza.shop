@@ -27,7 +27,7 @@ const orders: Orders = Array.from({ length: 60 }).map((_, i) => {
     orderId: `order-${i + 1}`,
     customerName: `Customer ${i + 1}`,
     createdAt: new Date().toISOString(),
-    total: Math.random() * 100000,
+    total: 2400,
     status: statuses[i % 5],
   }
 })
@@ -35,13 +35,11 @@ const orders: Orders = Array.from({ length: 60 }).map((_, i) => {
 export const getOrdersMock = http.get<never, never, GetOrdersResponse>(
   '/orders',
   async ({ request }) => {
-    // Transformando uma string em url new URL(request.url) e desestruturando para receber os searchParams
     const { searchParams } = new URL(request.url)
 
     const pageIndex = searchParams.get('pageIndex')
       ? Number(searchParams.get('pageIndex'))
       : 0
-
     const customerName = searchParams.get('customerName')
     const orderId = searchParams.get('orderId')
     const status = searchParams.get('status')
@@ -49,25 +47,21 @@ export const getOrdersMock = http.get<never, never, GetOrdersResponse>(
     let filteredOrders = orders
 
     if (customerName) {
-      // Retornando apenas os pedidos que sejam relacionados ao searchParams customerName
       filteredOrders = filteredOrders.filter((order) =>
         order.customerName.includes(customerName),
       )
     }
 
     if (orderId) {
-      // Retornando apenas os pedidos que sejam relacionados ao searchParams orderId
       filteredOrders = filteredOrders.filter((order) =>
-        order.customerName.includes(orderId),
+        order.orderId.includes(orderId),
       )
     }
 
     if (status) {
-      // Retornando apenas os pedidos que sejam relacionados ao searchParams orderId
       filteredOrders = filteredOrders.filter((order) => order.status === status)
     }
 
-    // Fazendo um slice sempre de 10 elementos
     const paginatedOrders = filteredOrders.slice(
       pageIndex * 10,
       (pageIndex + 1) * 10,
