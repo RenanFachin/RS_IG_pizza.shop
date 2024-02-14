@@ -10,17 +10,19 @@
     "generate": "drizzle-kit generate:pg",
     "migrate": "bun src/db/migrate.ts",
     "studio": "drizzle-kit studio",
-    "seed": "bun src/db/seed.ts"
+    "seed": "bun src/db/seed.ts",
+    "lint": "eslint --fix src --ext ts"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@rocketseat/eslint-config": "^2.2.2",
     "@types/bun": "latest",
     "chalk": "^5.3.0",
     "drizzle-kit": "^0.20.14",
-    "pg": "^8.11.3"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+    "eslint": "^8.56.0",
+    "eslint-plugin-drizzle": "^0.2.3",
+    "pg": "^8.11.3",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",

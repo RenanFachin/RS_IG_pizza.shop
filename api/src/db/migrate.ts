@@ -6,15 +6,15 @@ import chalk from 'chalk'
 
 // conexão com o db
 const connection = postgres(env.DATABASE_URL, {
-  max: 1
+  max: 1,
 })
 
 // conexão do drizzle
 const db = drizzle(connection)
 
 await migrate(db, {
-  migrationsFolder: 'drizzle'
-}) //migrationsFolder precisa refletir o out do arquivo drizzle.config]
+  migrationsFolder: 'drizzle',
+}) // migrationsFolder precisa refletir o out do arquivo drizzle.config]
 
 console.log(chalk.bgGreenBright('Migrations applied successfully!'))
 
