@@ -15,6 +15,20 @@
       "when": 1707944200304,
       "tag": "0001_amazing_madripoor",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707945438263,
+      "tag": "0002_lying_nighthawk",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1707945531265,
+      "tag": "0003_closed_miek",
+      "breakpoints": true
     }
   ]
 }
