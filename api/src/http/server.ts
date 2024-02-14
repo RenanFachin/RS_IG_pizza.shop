@@ -1,7 +1,10 @@
 import { Elysia } from 'elysia' // Elysia é uma classe, precisamos instanciar
 
-const app = new Elysia().get('/', () => {
-  return 'Hello world!'
+const app = new Elysia()
+
+
+app.get('/', () => {
+  return 'Hello world from BUN!'
 })
 
 
