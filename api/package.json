@@ -28,6 +28,7 @@
     "@elysiajs/cookie": "^0.8.0",
     "@elysiajs/jwt": "^0.8.0",
     "@paralleldrive/cuid2": "^2.2.2",
+    "dayjs": "^1.11.10",
     "drizzle-orm": "^0.29.3",
     "elysia": "^0.8.17",
     "postgres": "^3.4.3",
