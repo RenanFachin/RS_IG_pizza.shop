@@ -4,12 +4,14 @@ import { sendAuthLink } from './routes/send-auth-link'
 
 import { authenticateFromlink } from './routes/authenticate-from-link'
 import { signOut } from './routes/sign-out'
+import { getProfile } from './routes/get-profile'
 
 const app = new Elysia()
   .use(registerRestaurant)
   .use(sendAuthLink)
   .use(authenticateFromlink)
   .use(signOut)
+  .use(getProfile)
 
 app.listen(3333, () => {
   console.log('🛸 HTTP server running!')

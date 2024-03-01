@@ -48,7 +48,7 @@ export const authenticateFromlink = new Elysia().use(auth).get(
     await db.delete(authLinks).where(eq(authLinks.code, code))
 
     // redirecionando o usuário (redirect vem por parâmetro da rota)
-    set.redirect = redirect
+    // set.redirect = redirect
   },
   {
     // Validação do que como params na rota
