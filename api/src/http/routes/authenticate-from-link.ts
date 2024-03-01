@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm'
 // .use(auth) -> contém os módulos de jwt e cookies
 export const authenticateFromlink = new Elysia().use(auth).get(
   '/auth-links/authenticate',
-  async ({ query, jwt, setCookie, set }) => {
+  async ({ query, signUser, set }) => {
     const { code, redirect } = query
 
     // verificando se é válido
@@ -39,15 +39,9 @@ export const authenticateFromlink = new Elysia().use(auth).get(
       },
     })
 
-    const token = await jwt.sign({
+    await signUser({
       sub: authLinkFromCode.userId,
       restaurantId: managedRestaurant?.id,
-    })
-
-    setCookie('auth', token, {
-      httpOnly: true, // não deixa vísivel pelo client-side
-      maxAge: 60 * 60 * 24 * 7, // 7 dias
-      path: '/',
     })
 
     // Apagando o link da tabela para que ele não possa ser utilizado para autenticação novamente
